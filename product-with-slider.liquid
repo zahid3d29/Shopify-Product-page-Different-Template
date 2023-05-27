@@ -1,0 +1,502 @@
+
+<!-- Main product code below  -->
+
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+<!-- Demo styles -->
+<style>
+@font-face {
+  font-family: 'Proxima';
+  src: url('Proxima Nova Font.woff2') format('woff2');  
+  font-style: normal;  
+}
+
+h1{
+  font-family: Proxima;
+}
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .swiper {
+    width: 100%;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .mySwiper2 {
+    height: 80%;
+    width: 100%;
+  }
+
+  .mySwiper {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+
+  .mySwiper .swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.4;
+  }
+
+  .mySwiper .swiper-slide-thumb-active {
+    opacity: 1;
+    border: 5px solid #47c1bf;
+    border-radius: 25px 10px;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
+
+<style>
+  .width {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+  }
+
+  .product-left {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 30px;
+  }
+
+  .product-left img {
+    width: 100%;
+    height: 500px;
+    margin: 10px;
+  }
+
+  .product-right {
+    width: 40%;
+    padding: 30px;
+  }
+  p.product-price {
+    font-size: 32px;
+    color: #47c1bf;
+  }
+  p.product-compare {
+    font-size: 32px;
+    color: #a10101;
+    text-decoration: line-through;
+  }
+  .product-description {
+    font-size: 16px;
+    padding: 15px 0;
+  }
+
+  form#product_form_6862590836894 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .product-option {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .product-option div input[type="radio"] {
+      display: none;
+  }
+  .product-option div input[type="radio"]:checked ~ label {
+      border: 1px solid #000;
+      padding: 5px;
+  }
+  .product-option div {
+      display: inline-flex;
+      padding: 5px;
+  }
+  
+
+  select#product-select,
+  input#quantity {
+    height: 40px;
+    width: 80%;
+    font-weight: 700;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid #47c1bf;
+    padding: 0 8px;
+    margin: 0px 5px;
+  }
+
+  button.product-add {
+    height: 44px;
+    width: 100%;
+    border: 1px solid #47c1bf;
+    padding: 0 10px;
+    background: lightseagreen;
+    color: #fff;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .hide {
+    display: none;
+  }
+ div.product-image-thumbs {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+  }
+  div.product-image-thumbs div {
+    list-style: none;
+  }
+
+  div.product-image-thumbs div img {
+    display: block;
+    width: 120px;
+    height: 120px;
+  }
+  .selected {
+    border: 5px solid #47c1bf;
+    border-radius: 25px 10px;
+  }
+  button:disabled {
+    background: #dfe3e8;
+    border: 1px solid #dfe3e8;
+    color: black;
+  }
+  span.plus,
+  span.minus {
+      font-size: 17px;
+      display: block;
+      border: none;
+      color: white;
+  }
+
+  button.quantity-selector-plus,
+  button.quantity-selector-minus {
+      border: 1px solid #47c1bf;
+      background: #000000;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      padding: 0;
+  }
+</style>
+
+
+<div class="product">
+  <div class="width">
+    <div class="product-left">
+        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+          <div class="swiper-wrapper">
+              {% assign featured = product.images %}
+              {% for featured in product.images %}
+               <div  class="swiper-slide">
+                <img thumbnail-color="{{ featured.alt }}" id="product-image" src="{{ featured | image_url }}">
+               </div>
+              {% endfor %}
+            {% if product.selected_or_first_available_variant.featured_image %}
+
+            {% else %}
+              {% assign featured = product.featured_image %}
+              {% for featured in product.images %}
+               <div class="swiper-slide">
+                <img thumbnail-color="{{ featured.alt }}" id="product-image" src="{{ featured | image_url }}">
+               </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+        </div>
+
+        <div thumbsSlider="" class="swiper mySwiper">
+            <div class="swiper-wrapper product-image-thumbs">
+
+              {% for image in product.images %}
+                <div class="swiper-slide {% if image == featured %}swiper-slide-thumb-active{% endif %}">
+                  <img thumbnail-color="{{ featured.alt }}" src="{{ image | image_url: master  }}" />
+                </div>
+              {% endfor %}
+             
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+    <div class="product-right">
+      <h1>{{ product.title }}</h1>
+
+      {{  product.metafields.product.key_points }}
+      <div class="product-prices">
+        <p class="product-compare {% unless product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}hide{% endunless %}">
+          {{ product.selected_or_first_available_variant.compare_at_price | money }}
+        </p>
+        <p class="product-price">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </p>
+      </div>
+      <div class="product-description">
+        {{ product.description }}
+      </div>
+
+      {% form 'product', product %}
+        <input id="product-id" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {% if product.available and product.variants.size > 1  %}
+          <div class="product-option">           
+            {% for option in product.options_with_values %}
+              <fieldset>
+                <legend>{{ option.name }}</legend>
+                {% for value in option.values %}
+                  <div>
+                    <input
+                      {% if option.selected_value == value %}checked{% endif %}
+                      type="radio"
+                      name="{{ option.name }}"
+                      value="{{ value }}"
+                      id="{{ option.name | handlize }}-{{ value | handlize }}" >
+                  
+                    {% if option.name == "Color" %}
+                        <label style="background-image:url({{ value | append: '.png' | file_url }}); width: 24px;height: 24px; display: block;padding: 5px;" for="{{ option.name | handlize }}-{{ value | handlize }}">
+                          
+                        </label>
+                    {% else %}
+                        <label style="padding: 5px;"  for="{{ option.name | handlize }}-{{ value | handlize }}">
+                          {{ value }}
+                        </label>
+                    {% endif %}
+
+                  </div>
+                {% endfor %}
+              </fieldset>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <div class="product-option">
+          <label for="quantity">Quantity</label>
+          <div>
+            <div class="quantity-selector">
+              <button type="button" class="quantity-selector-minus">
+                {% include 'minus-svg' %}
+              </button>
+              <input id="quantity"
+              name="quantity"
+              value="1"
+              class="quantity-selector-inputselector-"
+              />
+              <button type="button" class="quantity-selector-plus">
+                {% include 'plus-svg' %}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} id="add-to-cart" type="submit" class="product-add">
+          {% if product.selected_or_first_available_variant.available %}
+            {{ "general.add_to_cart" | t }}
+          {% else %}
+            Out of stock
+          {% endif %}
+        </button>
+
+        <button {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %} id="buy-it-now" type="submit" class="product-add">
+          {% if product.selected_or_first_available_variant.available %}
+            Buy It Now
+          {% else %}
+            Out of stock
+          {% endif %}
+        </button>
+
+      {% endform %}
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+
+  var product = {{ product |  json }}
+
+
+  document.querySelectorAll('.product-option input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+
+      // what we want to get when Each radion button selected?
+      var selectedOptions = []
+      document.querySelectorAll('.product-option input[type="radio"]:checked').forEach(radio => {
+        selectedOptions.push(radio.value)
+      })
+
+      // we got it!
+      console.log(selectedOptions)
+      
+      // Get the matched varaint from the selectedOtions
+      var matchedVariant = product
+        .variants
+        .find(variant => {
+          var pass = true
+
+          for (var i = 0; i < selectedOptions.length; i++) {
+            if (selectedOptions.indexOf(variant.options[i]) === -1) {
+              pass = false
+              break
+            }
+          }
+          return pass
+        })
+
+        // we get matched variant here
+        // console.log(matchedVariant)
+
+
+      // change product from variant ID
+      document.querySelector('#product-id').value = matchedVariant.id
+
+      // get the variant url
+      var url = new URLParse(window.location.href, true)
+      url.query.variant = matchedVariant.id
+      window.history.replaceState(null, null, url.toString());
+
+      // we got the selected variant url here
+      {% comment %} console.log(url.toString()) {% endcomment %}
+
+
+      // change prices when clicked variant
+      document.querySelector('.product-price').textContent = formatMoney(matchedVariant.price, "{{ shop.money_format }}")
+      document.querySelector('.product-compare').textContent = formatMoney(matchedVariant.compare_at_price, "{{ shop.money_format }}")
+
+      matchedVariant.compare_at_price > matchedVariant.price ? 
+        document.querySelector('.product-compare').classList.remove('hide') :
+        document.querySelector('.product-compare').classList.add('hide')
+
+      // image changed when variant selected
+      if (matchedVariant.featured_image){
+        document.querySelector('#product-image').setAttribute('src', matchedVariant.featured_image.src)
+        document.querySelector('.swiper-slide-active img').setAttribute('src', matchedVariant.featured_image.src)
+        document.querySelector('.product-image-thumbs .swiper-slide-thumb-active').classList.remove('swiper-slide-thumb-active')
+        
+        // document.querySelectorAll('.product-image-thumbs').classList.add('swiper-slide-thumb-active')
+        document.querySelectorAll('.product-image-thumbs div')[matchedVariant.featured_image.position - 1].classList.add('swiper-slide-thumb-active')
+      }
+
+      
+      const myAttr = document.querySelector('.product-image-thumbs img');
+      let thumbColor = myAttr.getAttribute('thumbnail-color');
+
+      // console.log(matchedVariant.featured_image.alt)
+      // console.log(thumbColor)
+      
+      // console.log(matchedVariant.featured_image.src); 
+
+      // change button
+      var add = document.querySelector("#add-to-cart")
+      var buy = document.querySelector("#buy-it-now")
+
+      if (matchedVariant.available){
+        add.textContent = "Add to cart"
+        add.disabled = false
+        buy.textContent = "Buy It Now"
+        buy.disabled = false
+      } else {
+        add.textContent = "Out of Stock"
+        add.disabled = true
+        buy.textContent = "Out of Stock"
+        buy.disabled = true
+      }
+    })
+  })
+
+  document.querySelectorAll('.product-image-thumbs div').forEach(div => {
+    div.addEventListener('click', () => {
+      // when clicked variant image, the .swiper-slide-thumb-active class will be removed 
+      document.querySelector('.product-image-thumbs div.swiper-slide-thumb-active').classList.remove('swiper-slide-thumb-active')
+      // when select variant image, the '.swiper-slide-thumb-active' class will be added
+      div.classList.add('swiper-slide-thumb-active')
+      // when clicked to variant image, that image src will replace to the featured image src. so the selected variant image will replace featured image
+      document.querySelector('#product-image').setAttribute('src', div.querySelector('img').getAttribute('src'))
+      console.log(div.querySelector('img').getAttribute('src'));
+    })
+  })
+
+  // create buy it now button
+  document.querySelector('#buy-it-now').addEventListener('click', (e) => {
+    e.preventDefault()
+    var form = document.querySelector('.shopify-product-form')
+    var input = document.createElement('input')
+    input.value = "/checkout"
+    input.type = "hidden"
+    input.name = "return_to"
+
+    form.appendChild(input)
+    form.submit()
+  })
+
+  document.querySelector('.quantity-selector-plus').addEventListener('click', () => {
+    var currentVal = Number(document.querySelector('#quantity').value)
+    document.querySelector('#quantity').value = currentVal + 1
+  })
+
+  document.querySelector('.quantity-selector-minus').addEventListener('click', () => {
+    var currentVal = Number(document.querySelector('#quantity').value)
+    if(currentVal > 1 ){
+      document.querySelector('#quantity').value = currentVal - 1
+    }
+  })
+
+
+</script>
+
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js" defer></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    spaceBetween: 5,
+    slidesPerView: 4,
+    freeMode: true,
+    watchSlidesProgress: true,
+  });
+  var swiper2 = new Swiper(".mySwiper2", {
+    spaceBetween: 5,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    thumbs: {
+      swiper: swiper,
+    },
+  });
+</script>
+
+
